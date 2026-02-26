@@ -597,9 +597,9 @@ function closeContact() {
   document.getElementById("contactModal").style.display = "none";
 }
 async function sendMessage() {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const message = document.getElementById("message").value;
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const message = document.getElementById("message").value.trim();
 
   const status = document.getElementById("status");
   status.innerText = "Sending...";
@@ -611,16 +611,20 @@ async function sendMessage() {
       body: JSON.stringify({ name, email, message })
     });
 
+    const text = await res.text();
+
     if (res.ok) {
       status.innerText = "Message sent 🚀";
     } else {
-      status.innerText = "Failed to send.";
+      status.innerText = `Send failed (${res.status}): ${text}`;
     }
-  } catch {
-    status.innerText = "Error sending message.";
+  } catch (err) {
+    status.innerText = `Fetch error: ${err?.message || err}`;
   }
 }
+}
 </script>
+
 
 
 
