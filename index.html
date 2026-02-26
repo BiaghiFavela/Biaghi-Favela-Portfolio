@@ -501,7 +501,17 @@
             </div>
           </div>
         </div>
+<div class="social-row" id="contactBtn">
+  <div class="left">
+    <div class="title">Contact</div>
+    <div class="handle">Send me a message</div>
+  </div>
+  <div class="tag">SEND</div>
+</div>
 
+</div>
+</div>
+</div>
         <!-- PROJECTS -->
         <div class="panel" id="projects">
           <div class="card">
@@ -559,5 +569,55 @@
 
     allPills.forEach(btn => btn.addEventListener("click", () => showPanel(btn.dataset.target)));
   </script>
-</body>
-</html>
+  </script>
+
+<!-- CONTACT MODAL -->
+<div id="contactModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:9999;align-items:center;justify-content:center;">
+  <div style="width:min(420px,90vw);background:#0d0d12;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:22px;color:white;box-shadow:0 20px 60px rgba(0,0,0,.6);">
+
+    <h3 style="margin-top:0;font-family:Cinzel;">Contact Me</h3>
+
+    <input id="name" placeholder="Your name" style="width:100%;margin-bottom:10px;padding:10px;border-radius:8px;border:none;background:#1a1a22;color:white;">
+    <input id="email" placeholder="Your email" style="width:100%;margin-bottom:10px;padding:10px;border-radius:8px;border:none;background:#1a1a22;color:white;">
+    <textarea id="message" placeholder="Message..." rows="4" style="width:100%;margin-bottom:14px;padding:10px;border-radius:8px;border:none;background:#1a1a22;color:white;"></textarea>
+
+    <button onclick="sendMessage()" style="width:100%;padding:10px;border:none;border-radius:8px;background:#C8A35F;color:black;font-weight:bold;cursor:pointer;">
+      Send
+    </button>
+
+    <div id="status" style="margin-top:10px;font-size:12px;color:#aaa;"></div>
+  </div>
+</div>
+
+<script>
+const API_URL = "https://eozijajhzj.execute-api.us-east-1.amazonaws.com/default/biaghi-portfolio-contact";
+
+document.getElementById("contactBtn")?.addEventListener("click", () => {
+  document.getElementById("contactModal").style.display = "flex";
+});
+
+async function sendMessage() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const message = document.getElementById("message").value;
+
+  const status = document.getElementById("status");
+  status.innerText = "Sending...";
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, message })
+    });
+
+    if (res.ok) {
+      status.innerText = "Message sent 🚀";
+    } else {
+      status.innerText = "Failed to send.";
+    }
+  } catch {
+    status.innerText = "Error sending message.";
+  }
+}
+</script>
