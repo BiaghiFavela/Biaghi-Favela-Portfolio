@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biaghi Favela</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#07070A;
+
+      --text:rgba(255,255,255,.90);
+      --muted:rgba(255,255,255,.70);
+      --soft:rgba(255,255,255,.55);
+
+      --gold:#C8A35F;
+      --gold2:#E6C77A;
+
+      --glass:rgba(255,255,255,.06);
+      --glass2:rgba(255,255,255,.08);
+
+      --border:rgba(255,255,255,.10);
+      --borderGold:rgba(230,199,122,.28);
+
+      --radius:18px;
+      --ease:cubic-bezier(.2,.8,.2,1);
+      --dur:280ms;
+
+      --shadow: 0 22px 60px rgba(0,0,0,.55);
+      --glow: 0 0 0 1px rgba(230,199,122,.18), 0 14px 40px rgba(200,163,95,.18);
+      --glowStrong: 0 0 0 1px rgba(230,199,122,.30), 0 18px 55px rgba(200,163,95,.30);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background: #050509;
+      overflow-x:hidden;
+    }
+
+    /* BACKGROUND */
+    .hero{
+      min-height:100vh;
+      position:relative;
+      isolation:isolate;
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:0;
+      z-index:-2;
+      background:
+        radial-gradient(1200px 700px at 50% 18%, rgba(0,0,0,.10), rgba(0,0,0,.78) 70%),
+        url("car.png?v=2") center 72%/cover no-repeat;
+      filter: contrast(1.12) brightness(1.03) saturate(1.05);
+      transform: scale(1.01);
+    }
+    .hero::after{
+      content:"";
+      position:absolute; inset:0;
+      z-index:-1;
+      background:
+        radial-gradient(900px 520px at 50% 32%, rgba(0,0,0,.10), rgba(0,0,0,.70) 70%),
+        linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.65));
+    }
+
+    /* TOP BAR */
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      padding:22px 26px;
+      gap:14px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      user-select:none;
+    }
+
+    .badge{
+      width:36px;height:36px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      font-weight:700;
+      letter-spacing:.04em;
+      color:rgba(255,255,255,.92);
+      background: radial-gradient(circle at 30% 30%, rgba(230,199,122,.20), rgba(0,0,0,.40));
+      border: 1px solid rgba(230,199,122,.22);
+      box-shadow: var(--glow);
+      backdrop-filter: blur(10px);
+    }
+
+    .brandtext{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      padding-top:2px;
+    }
+    .brandtext .fav{
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:rgba(230,199,122,.85);
+      line-height:1.05;
+    }
+    .brandtext .sub{
+      font-size:12px;
+      color:rgba(255,255,255,.65);
+      line-height:1.05;
+    }
+
+    /* PILL BUTTONS (matches screenshot) */
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .pillbtn{
+      appearance:none;
+      border:none;
+      background: rgba(0,0,0,.28);
+      color: rgba(255,255,255,.80);
+      padding:8px 14px;
+      border-radius:999px;
+      font-size:12px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      cursor:pointer;
+
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      backdrop-filter: blur(12px);
+
+      transition:
+        transform var(--dur) var(--ease),
+        background var(--dur) var(--ease),
+        border-color var(--dur) var(--ease),
+        box-shadow var(--dur) var(--ease),
+        color var(--dur) var(--ease);
+    }
+
+    .pillbtn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(230,199,122,.22);
+      color: rgba(255,255,255,.92);
+    }
+
+    .pillbtn.active{
+      background: linear-gradient(180deg, rgba(230,199,122,.18), rgba(0,0,0,.35));
+      border-color: rgba(230,199,122,.32);
+      box-shadow: var(--glowStrong);
+      color: rgba(255,255,255,.95);
+      position:relative;
+    }
+
+    /* tiny gold underline glow like screenshot */
+    .pillbtn.active::after{
+      content:"";
+      position:absolute;
+      left:16px; right:16px; bottom:-8px;
+      height:2px;
+      border-radius:999px;
+      background: linear-gradient(90deg, transparent, rgba(230,199,122,.9), transparent);
+      filter: blur(.2px);
+      opacity:.9;
+    }
+
+    /* CENTER */
+    .center{
+      width:min(1100px, 92vw);
+      margin: 40px auto 0;
+      text-align:center;
+      padding-bottom: 70px;
+    }
+
+    .title{
+      font-family:Cinzel, serif;
+      font-weight:600;
+      font-size: clamp(44px, 6vw, 86px);
+      letter-spacing:.06em;
+      margin: 18px 0 8px;
+
+      /* gold edge highlight like screenshot */
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 18px 70px rgba(0,0,0,.75);
+      position:relative;
+      display:inline-block;
+      padding: 0 10px;
+    }
+
+    /* subtle gold line under name */
+    .title::after{
+      content:"";
+      position:absolute;
+      left:8px; right:8px; bottom:-10px;
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(230,199,122,.55), transparent);
+      opacity:.9;
+    }
+
+    .quote{
+      margin: 16px 0 6px;
+      color: rgba(255,255,255,.72);
+      font-size: 14px;
+      font-style: italic;
+    }
+    .subtitle{
+      margin:0;
+      color: rgba(255,255,255,.65);
+      font-size: 13px;
+    }
+
+    /* MIDDLE PILL ROW (About/Socials/Projects) */
+    .midtabs{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin: 22px 0 18px;
+    }
+    .midtabs .pillbtn{
+      min-width: 150px;
+      padding:10px 16px;
+      border-radius: 14px; /* slightly squarer like screenshot middle row */
+      letter-spacing:.12em;
+    }
+    .midtabs .pillbtn.active::after{
+      left:22px; right:22px; bottom:-10px;
+    }
+
+    /* PANELS (smooth fade) */
+    .panel-wrap{
+      position:relative;
+      margin-top: 14px;
+      min-height: 360px;
+    }
+
+    .panel{
+      width:100%;
+      display:none;
+      opacity:0;
+      transform: translateY(10px);
+      filter: blur(2px);
+      transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease), filter var(--dur) var(--ease);
+    }
+    .panel.active{ display:block; }
+    .panel.show{
+      opacity:1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* CARDS */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.035));
+      border: 1px solid rgba(255,255,255,.10);
+      border-top-color: rgba(230,199,122,.22);
+      border-bottom-color: rgba(255,255,255,.08);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      text-align:left;
+    }
+
+    .card .kicker{
+      font-size: 11px;
+      letter-spacing:.20em;
+      text-transform:uppercase;
+      color: rgba(230,199,122,.75);
+      margin-bottom: 8px;
+      text-align:center;
+    }
+    .card h3{
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: rgba(255,255,255,.92);
+      text-align:center;
+    }
+    .card p{
+      margin:0;
+      color: rgba(255,255,255,.70);
+      font-size: 13px;
+      line-height:1.6;
+      text-align:center;
+    }
+
+    /* SOCIAL ROWS (your “old style” list) */
+    .social-list{
+      margin-top: 16px;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 980px){
+      .social-list{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px){
+      .social-list{ grid-template-columns: 1fr; }
+    }
+
+    .social-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.28);
+      text-decoration:none;
+      color: rgba(255,255,255,.92);
+      transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), background var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .social-row:hover{
+      transform: translateY(-2px);
+      border-color: rgba(230,199,122,.22);
+      background: rgba(0,0,0,.34);
+      box-shadow: var(--glow);
+    }
+
+    .social-row .left{ display:flex; flex-direction:column; gap:4px; }
+    .social-row .title{ font-size:13px; font-weight:600; letter-spacing:.02em; }
+    .social-row .handle{
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color: rgba(230,199,122,.70);
+    }
+    .tag{
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.72);
+    }
+    .tag.muted{ color: rgba(255,255,255,.55); opacity:.8; }
+
+    .social-row.disabled{
+      cursor:default;
+      opacity:.78;
+    }
+    .social-row.disabled:hover{ transform:none; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+
+    .social-row.email{
+      cursor:default;
+    }
+    .social-row.email:hover{ transform:none; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+
+    /* FOOTER */
+    .footer{
+      margin-top: 26px;
+      text-align:center;
+      color: rgba(255,255,255,.48);
+      font-size: 11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+    .footer b{ color: rgba(230,199,122,.82); font-weight:600; }
+  </style>
+</head>
+
+<body>
+  <div class="hero">
+    <div class="topbar">
+      <div class="brand">
+        <div class="badge">BF</div>
+        <div class="brandtext">
+          <div class="fav">FAVELA</div>
+          <div class="sub">Artist • Producer • Creator</div>
+        </div>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="pillbtn active" data-target="home">Home</button>
+        <button class="pillbtn" data-target="about">About</button>
+        <button class="pillbtn" data-target="socials">Socials</button>
+        <button class="pillbtn" data-target="projects">Projects</button>
+      </div>
+    </div>
+
+    <main class="center">
+      <div class="title">BIAGHI FAVELA</div>
+      <div class="quote">“El trabajo duro vence al talento cuando el talento se conforma.”</div>
+      <p class="subtitle">Artist, Producer & Creator — building my world through music, coding & tech.</p>
+
+      <!-- Middle row pills -->
+      <div class="midtabs" aria-label="Section tabs">
+        <button class="pillbtn active" data-target="about">About</button>
+        <button class="pillbtn" data-target="socials">Socials</button>
+        <button class="pillbtn" data-target="projects">Projects / Upcoming</button>
+      </div>
+
+      <section class="panel-wrap">
+        <!-- HOME -->
+        <div class="panel active show" id="home">
+          <div class="card">
+            <div class="kicker">WELCOME</div>
+            <h3>Start here</h3>
+            <p>Use the tabs to explore About, Socials, and Projects.</p>
+          </div>
+        </div>
+
+        <!-- ABOUT -->
+        <div class="panel" id="about">
+          <div class="card">
+            <div class="kicker">ABOUT</div>
+            <h3>Who I am</h3>
+            <p>
+              I’m Biaghi Favela — an artist, producer, and creator. I’m building a brand rooted in discipline,
+              consistency, and vision — where music and tech meet.
+              <br><br>
+              I’m currently a student at SJSU, and I’m also growing my skills in cloud engineering (AWS) and web
+              deployment. This site is the hub for my releases, socials, and the projects I’m building.
+            </p>
+          </div>
+        </div>
+
+        <!-- SOCIALS -->
+        <div class="panel" id="socials">
+          <div class="card">
+            <div class="kicker">SOCIALS</div>
+            <h3>Find me everywhere</h3>
+            <p>Tap OPEN to visit. Spotify coming soon.</p>
+
+            <div class="social-list">
+              <a class="social-row" href="https://www.instagram.com/biaghifavelaa/" target="_blank" rel="noreferrer">
+                <div class="left">
+                  <div class="title">Instagram</div>
+                  <div class="handle">@biaghifavelaa</div>
+                </div>
+                <div class="tag">OPEN</div>
+              </a>
+
+              <a class="social-row" href="https://www.youtube.com/@Biaghifavela" target="_blank" rel="noreferrer">
+                <div class="left">
+                  <div class="title">YouTube</div>
+                  <div class="handle">@Biaghifavela</div>
+                </div>
+                <div class="tag">OPEN</div>
+              </a>
+
+              <a class="social-row" href="https://www.tiktok.com/@biaghi.favela" target="_blank" rel="noreferrer">
+                <div class="left">
+                  <div class="title">TikTok</div>
+                  <div class="handle">@biaghi.favela</div>
+                </div>
+                <div class="tag">OPEN</div>
+              </a>
+
+              <a class="social-row" href="https://x.com/BiaghiFavela" target="_blank" rel="noreferrer">
+                <div class="left">
+                  <div class="title">X (Twitter)</div>
+                  <div class="handle">@BiaghiFavela</div>
+                </div>
+                <div class="tag">OPEN</div>
+              </a>
+
+              <a class="social-row" href="https://soundcloud.com/biaghifavela" target="_blank" rel="noreferrer">
+                <div class="left">
+                  <div class="title">SoundCloud</div>
+                  <div class="handle">biaghifavela</div>
+                </div>
+                <div class="tag">OPEN</div>
+              </a>
+
+              <div class="social-row disabled">
+                <div class="left">
+                  <div class="title">Spotify</div>
+                  <div class="handle">Biaghi Favela</div>
+                </div>
+                <div class="tag muted">COMING SOON</div>
+              </div>
+
+              <div class="social-row email">
+                <div class="left">
+                  <div class="title">Business Email</div>
+                  <div class="handle">biaghibusiness@gmail.com</div>
+                </div>
+                <div class="tag muted">EMAIL</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECTS -->
+        <div class="panel" id="projects">
+          <div class="card">
+            <div class="kicker">PROJECTS</div>
+            <h3>Current + Upcoming</h3>
+            <p>
+              Current: New releases + visuals, AWS portfolio + deployments, brand building (FAVELA).<br><br>
+              Upcoming: Merch/lifestyle drops, short-form series, site expansions (music page, press kit).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        Built by <b>Biaghi</b> • Hosted on <b>AWS</b> • S3 • CloudFront
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const allPills = Array.from(document.querySelectorAll(".pillbtn"));
+    const panels = Array.from(document.querySelectorAll(".panel"));
+
+    let activeId = "home";
+    let busy = false;
+
+    function setActiveButtons(targetId){
+      // top row + middle row share same class; highlight all matching
+      allPills.forEach(btn => btn.classList.toggle("active", btn.dataset.target === targetId));
+    }
+
+    function showPanel(targetId){
+      if (busy || targetId === activeId) return;
+      busy = true;
+
+      const outgoing = document.getElementById(activeId);
+      const incoming = document.getElementById(targetId);
+
+      // Activate incoming
+      incoming.classList.add("active");
+      void incoming.offsetWidth;
+
+      // Crossfade
+      outgoing.classList.remove("show");
+      incoming.classList.add("show");
+
+      setActiveButtons(targetId);
+
+      setTimeout(() => {
+        outgoing.classList.remove("active");
+        activeId = targetId;
+        busy = false;
+      }, 320);
+    }
+
+    allPills.forEach(btn => btn.addEventListener("click", () => showPanel(btn.dataset.target)));
+  </script>
+</body>
+</html>
