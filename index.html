@@ -619,8 +619,7 @@ async function sendMessage() {
       status.innerText = `Send failed (${res.status}): ${text}`;
     }
   } catch (err) {
-    status.innerText = `Fetch error: ${err?.message || err}`;
-  }
+  status.innerText = `Fetch error: ${err?.message || err}`;
 }
 }
 </script>
